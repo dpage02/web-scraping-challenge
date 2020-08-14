@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mars Stuff</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div clas="container">
+    <div class="jumbotron text-center">
+      <h1>Mission to Mars</h1>
+      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+    </div>
+      
+    <div class="row">
+        <div class="col-lg-8" style="padding-left:60px; padding-right: 60px;">
+            <div class="news">
+                <u><b><h2>Latest Mars News</h3></b></u>
+                <b><h4 style="font-size: larger; font-weight: bolder;">{{mars.nasa_headline}}</h5></b>
+                <p>{{mars.body_teaser}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-7"style="padding-left:60px; padding-right: 60px;">
+            <u><b><h2>Featured Mars Image</h2></b></u>
+            <img src={{mars.image_url}} alt="Mars Featured Image" style="width:100%; height: 450px;">
+        </div>
+    </div>
+
+</body>
+</html>
+<!-- https://www.jpl.nasa.gov/spaceimages/images/largesize/PIA19330_hires.jpg -->
