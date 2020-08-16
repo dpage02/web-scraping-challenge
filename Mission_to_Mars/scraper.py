@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup as bs
 from splinter import Browser
+import time
 
 
 def init_browser():
@@ -26,12 +27,12 @@ def scrape():
     soup = bs(html, 'html.parser')
 
     # git container for each article 
-    results = soup.find_all('li', class_="slide")
+    results = soup.find('li', class_="slide")
 
     # get first headline and body 
-    for r in results:
-        headline = r.find('div', class_="content_title").text
-        body_teaser = r.find('div', class_="article_teaser_body").text
+    time.sleep(5)
+    headline = results.find('div', class_="content_title").text
+    body_teaser = results.find('div', class_="article_teaser_body").text
 
     # add headline and body to mars_data
     mars_data['nasa_headline'] = headline
@@ -47,6 +48,7 @@ def scrape():
     click_fi.click()
 
     # click on more info
+    time.sleep(4)
     click_mi = browser.links.find_by_partial_text('more info')
     click_mi.click()
 
@@ -64,8 +66,18 @@ def scrape():
     mars_data['image_url'] = image_url
 
     # gettig Mars Weather from twitter 
-    ###############################
-    ###############################
+    weather_url = "https://twitter.com/marswxreport?lang=en"
+    browser.visit(weather_url)
+
+    tweet_html = browser.html
+    soup_tweet = bs(tweet_html, 'lxml')
+
+    results = soup_tweet.find('div', class_="css-901oao r-jwli3a r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-bnwqim r-qvutc0")
+    time.sleep(3)
+    tweet = results.text
+
+
+    mars_data['tweet'] = tweet
 
     # getting Mars Facts
     # set url 
@@ -98,22 +110,36 @@ def scrape():
     # create dictionary
     hemis_dict = {}
 
+    # create list to hold hemi 
+    hemis_list = []
+
     # iterate through results to get hemisphere name and image 
     for r in results:
+        
+        # create dictionary to hold individual hemis
+        hemis_dict = {}
+        
+        # get individual links, visit page and creat bs objects
         info = r.find('a')['href']
         links = ('https://astrogeology.usgs.gov'+info)
-        
-
         browser.visit(links)
         link_html = browser.html
         soup_link = bs(link_html, 'html.parser')
+        
+        # get img and title
         img_url = soup_link.find('li').find('a', target='_blank')['href']
         hemi_title = soup_link.find('h2', class_='title').text
-        hemis_dict[hemi_title] = img_url
+        
+        # add to dictionary and append dict to list
+        hemis_dict['title'] = hemi_title
+        hemis_dict['img_url'] = img_url
+        hemis_list.append(hemis_dict)
+        
+        # go back to start process over 
         browser.back()
-    
+
     # add hemis_dict to mars_data
-    mars_data['HemisphereImg'] = hemis_dict
+    mars_data['HemisphereImg'] = hemis_list
 
 
     # quit browser

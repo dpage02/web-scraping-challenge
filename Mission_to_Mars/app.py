@@ -12,12 +12,12 @@ mongo = PyMongo(app, uri="mongodb://localhost:27017/mars_app")
 @app.route('/')
 def index():
     mars = mongo.db.mars.find_one()
-    print(mars["image_url"])
     return render_template('index.html', mars=mars)
 
 @app.route('/scrape')
 def scrape():
-    mars = mongo.db.mars
+    mars = mongo.db.mars # do i need this? 
+    mars.drop()
     data = scraper.scrape()
     mars.update(
         {},
