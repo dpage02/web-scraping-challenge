@@ -10,7 +10,7 @@
     
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
         <title>Mars Stuff</title>
       </head>
       <body>
@@ -40,8 +40,10 @@
                 <div class="col-lg-5 col-md-12">
                     <div class="card" style="width: 100%;">
                         <div class="card-body">
-                          <h5 class="card-title">Current Weather on Mars</h5>
-                          <p class="card-text">{{mars.tweet}}</p>
+        
+                            <h5 class="card-title">Current Weather on Mars</h5>
+                            <p class="card-text">{{mars.tweet}}</p>
+                        
                         </div>
                     </div>
                     <br>
@@ -61,7 +63,8 @@
             {% for x in mars.HemisphereImg %} 
                 <div class="col mb-4">
                     <div class="card">
-                    <img src="{{x.img_url}}" class="card-img-top" alt="..."> 
+                    <a href="{{x.img_url}}">
+                    <img src="{{x.img_url}}" class="card-img-top" alt="{{x.title}} Hemisphere"></a>
                     <div class="card-body">
                         <h5 class="card-title" style="text-align: center;">{{x.title}}</h5>
                     </div>

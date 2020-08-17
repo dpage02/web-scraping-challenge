@@ -16,8 +16,7 @@ def index():
 
 @app.route('/scrape')
 def scrape():
-    mars = mongo.db.mars # do i need this? 
-    mars.drop()
+    mars = mongo.db.mars 
     data = scraper.scrape()
     mars.update(
         {},

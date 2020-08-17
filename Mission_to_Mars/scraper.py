@@ -22,7 +22,9 @@ def scrape():
     # save url and use browser to visit site
     url = "https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest"
     browser.visit(url)
+    browser.is_element_present_by_css("li.slide", wait_time=5)
 
+    
     html = browser.html
     soup = bs(html, 'html.parser')
 
@@ -30,7 +32,6 @@ def scrape():
     results = soup.find('li', class_="slide")
 
     # get first headline and body 
-    time.sleep(5)
     headline = results.find('div', class_="content_title").text
     body_teaser = results.find('div', class_="article_teaser_body").text
 
@@ -68,16 +69,19 @@ def scrape():
     # gettig Mars Weather from twitter 
     weather_url = "https://twitter.com/marswxreport?lang=en"
     browser.visit(weather_url)
+    browser.is_element_present_by_css("div.css-901oao r-jwli3a r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-bnwqim r-qvutc0", wait_time=5)
+    try:
+        tweet_html = browser.html
+        soup_tweet = bs(tweet_html, 'lxml')
 
-    tweet_html = browser.html
-    soup_tweet = bs(tweet_html, 'lxml')
-
-    results = soup_tweet.find('div', class_="css-901oao r-jwli3a r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-bnwqim r-qvutc0")
-    time.sleep(3)
-    tweet = results.text
+        results = soup_tweet.find('div', class_="css-901oao r-jwli3a r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-bnwqim r-qvutc0")
+        time.sleep(3)
+        tweet = results.text
 
 
-    mars_data['tweet'] = tweet
+        mars_data['tweet'] = tweet
+    except:
+        pass
 
     # getting Mars Facts
     # set url 
