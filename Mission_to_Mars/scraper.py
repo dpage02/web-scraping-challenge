@@ -28,7 +28,7 @@ def scrape():
     html = browser.html
     soup = bs(html, 'html.parser')
 
-    # git container for each article 
+    # get container for each article 
     results = soup.find('li', class_="slide")
 
     # get first headline and body 
